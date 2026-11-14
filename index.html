@@ -165,7 +165,7 @@ Git 验证：</pre><label class="checkline"><input type="checkbox" data-task="2"
 const KEY="python-test-learning-progress-v1";
 const questions=[
 {topic:"Python / 异常",q:"批量读取报告时，一份 JSON 文件格式损坏。更合理的处理方式是什么？",opts:["让整个批量任务立即退出","捕获该文件的 JSON 解析异常，记录 ERROR 后继续下一份","把损坏文件当作 PASS","忽略异常且不记录"],a:1,why:"单条记录损坏不应影响其他报告。应在单条记录处理边界捕获解析异常，记录对象和原因，然后继续循环。"},
-{topic:"Python / 异常",q:"下面代码中的 continue 会产生什么效果？",ctx:"for file in report_files:\\n    try:\\n        report = load_report(file)\\n    except ValueError:\\n        errors += 1\\n        continue\\n    process(report)",opts:["结束整个 Python 程序","结束当前函数","跳过本轮循环剩余语句，进入下一份文件","重新执行当前文件"],a:2,why:"continue 只影响当前循环轮次。它会跳过本轮后续语句，进入下一次循环。"},
+{topic:"Python / 异常",q:"下面代码中的 continue 会产生什么效果？",ctx:"for file in report_files:\n    try:\n        report = load_report(file)\n    except ValueError:\n        errors += 1\n        continue\n    process(report)",opts:["结束整个 Python 程序","结束当前函数","跳过本轮循环剩余语句，进入下一份文件","重新执行当前文件"],a:2,why:"continue 只影响当前循环轮次。它会跳过本轮后续语句，进入下一次循环。"},
 {topic:"Python / 类型校验",q:"为什么只写 isinstance(loss, (int, float)) 仍可能把 True 当作合法数字？",opts:["True 在 Python 中是 int 的子类","isinstance 只能检查字符串","float 会把 True 转成文本","JSON 不支持布尔值"],a:0,why:"Python 中 bool 是 int 的子类，因此 True/False 会通过对 int 的 isinstance 检查。需要先显式排除 bool。"},
 {topic:"Python / 文件路径",q:"Path(__file__).resolve().parent 通常表示什么？",opts:["当前进程的工作目录","当前 Python 文件所在目录","系统临时目录","当前用户主目录"],a:1,why:"__file__ 指向当前脚本文件，resolve() 得到规范化绝对路径，parent 取其所在目录。"},
 {topic:"Python / 模块",q:"if __name__ == '__main__': 的主要作用是什么？",opts:["确保模块只能导入一次","让文件被导入时也执行所有入口代码","区分直接运行文件与作为模块导入","自动安装依赖"],a:2,why:"直接运行脚本时 __name__ 为 __main__；被其他模块导入时则是模块名，因此可保护程序入口。"},
@@ -242,8 +242,9 @@ function renderStats(){
  document.getElementById("savedAt").textContent=state.updated?"最近保存："+new Date(state.updated).toLocaleString():"尚无记录";
 }
 function escapeHTML(value){return value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function escapeHTML(value){return value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function renderPython(source){
- const token=/("(?:\\\\.|[^"\\\\])*"|'(?:\\\\.|[^'\\\\])*'|#.*$|\\b(?:def|return|for|in|try|except|if|elif|else|pass|continue|break|with|as|import|from|class|raise|and|or|not|is|lambda|yield|True|False|None)\\b|\\b(?:pytest|json|logging|Path|isinstance|int|float|str|bool|list|dict|print)\\b|\\b\\d+(?:\\.\\d+)?\\b|\\b[A-Za-z_]\\w*(?=\\s*\\())/gm;
+ const token=/(#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:def|return|for|in|try|except|if|elif|else|pass|continue|break|with|as|import|from|class|raise|and|or|not|is|lambda|yield|True|False|None)\b|\b(?:pytest|json|logging|Path|isinstance|int|float|str|bool|list|dict|print)\b|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*(?=\s*\()/gm;
  let out="",last=0,match;
  while((match=token.exec(source))!==null){
   out+=escapeHTML(source.slice(last,match.index));
@@ -252,7 +253,7 @@ function renderPython(source){
   else if(t.startsWith('"')||t.startsWith("'"))cls="py-string";
   else if(/^(def|return|for|in|try|except|if|elif|else|pass|continue|break|with|as|import|from|class|raise|and|or|not|is|lambda|yield|True|False|None)$/.test(t))cls="py-keyword";
   else if(/^(pytest|json|logging|Path|isinstance|int|float|str|bool|list|dict|print)$/.test(t))cls="py-builtin";
-  else if(/^\\d/.test(t))cls="py-number";
+  else if(/^\d/.test(t))cls="py-number";
   out+='<span class="'+cls+'">'+escapeHTML(t)+'</span>';last=token.lastIndex;
  }
  out+=escapeHTML(source.slice(last));
