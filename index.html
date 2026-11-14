@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>Python 测试开发学习中心｜截至 2026-11-13</title>
+<style>
+:root{color-scheme:light;--bg:#f5f5f5;--panel:#fff;--ink:#171717;--muted:#707070;--line:#dedede;--soft:#ededed;--accent:#171717;--good:#176b3a;--bad:#a52c2c;--code:#202124;--codeink:#e8e8e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+button{font:inherit;cursor:pointer}a{color:inherit}.shell{max-width:900px;margin:auto;padding:22px 16px 70px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.eyebrow{font-size:12px;color:var(--muted);letter-spacing:.08em}.title{font-size:25px;font-weight:750;line-height:1.25;margin:5px 0}.subtitle{color:var(--muted);font-size:13px}.pill{border:1px solid var(--line);border-radius:99px;padding:5px 10px;font-size:12px;white-space:nowrap;background:var(--panel)}
+.nav{display:flex;gap:7px;overflow:auto;padding:16px 0 12px;position:sticky;top:0;background:var(--bg);z-index:5}.nav button{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:7px 13px;white-space:nowrap;font-size:13px}.nav button.active{background:#171717;color:#fff;border-color:#171717}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px;margin:12px 0}.panel h2{font-size:18px;margin:0 0 10px}.panel h3{font-size:15px;margin:15px 0 6px}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.stat{background:var(--soft);border-radius:12px;padding:11px}.stat strong{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
+.bar{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:8px}.bar>i{display:block;height:100%;width:0;background:#222;transition:width .2s}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.topic{border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--panel)}.topic .tag{font-size:11px;color:var(--muted)}.topic h3{margin:4px 0;font-size:15px}.topic p{font-size:13px;color:var(--muted);margin:0}
+.section{display:none}.section.active{display:block}
+.lesson{border:1px solid var(--line);border-radius:12px;margin:10px 0;background:var(--panel);overflow:hidden}.lesson summary{padding:13px 15px;font-weight:650;cursor:pointer}.lesson .body{padding:0 15px 15px}.lesson p,.lesson li{font-size:14px}.lesson ul{padding-left:20px}.note{border-left:3px solid #777;background:#f2f2f2;padding:9px 11px;font-size:13px;margin:10px 0}
+pre{white-space:pre;overflow:auto;background:var(--code);color:var(--codeink);border-radius:10px;padding:13px;font:13px/1.55 Consolas,"JetBrains Mono",monospace;tab-size:4}code{font-family:Consolas,"JetBrains Mono",monospace}
+.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.qnum{font-size:12px;color:var(--muted)}.qtitle{font-weight:700;font-size:17px;margin:12px 0}.qcontext{background:#f1f1f1;border-radius:10px;padding:11px;font-size:13px;margin:10px 0;white-space:pre-wrap}
+.options{display:grid;gap:8px;margin-top:12px}.option{display:flex;align-items:flex-start;gap:10px;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel);text-align:left;width:100%;font-size:14px}.option:disabled{cursor:default;opacity:1}.option .letter{font-weight:700;min-width:18px}.option.selected{border-color:#333;background:#f2f2f2}.feedback{margin-top:12px;border-radius:10px;padding:11px;font-size:13px}.feedback.good{background:#edf6ef;color:#165c32}.feedback.bad{background:#fbefef;color:#8d2525}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #222;background:#171717;color:#fff;border-radius:9px;padding:9px 14px;font-size:13px}.btn.secondary{background:#fff;color:#171717;border-color:var(--line)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.code-task{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:13px}.code-task h3{margin:0 0 5px}.code-task p{font-size:13px}.checkline{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin:8px 0}.checkline input{margin-top:5px}
+.footer{font-size:12px;color:var(--muted);text-align:center;padding:24px 0}
+@media(max-width:600px){.shell{padding:17px 12px 55px}.title{font-size:22px}.stats{gap:7px}.stat{padding:9px}.stat strong{font-size:19px}.cards{grid-template-columns:1fr}.panel{padding:14px}.nav{margin:0 -12px;padding:12px;background:var(--bg)}}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#111;--panel:#1b1b1b;--ink:#eee;--muted:#aaa;--line:#393939;--soft:#292929;--accent:#eee;--code:#090909;--codeink:#eee}.nav button{background:var(--panel);color:var(--ink)}.nav button.active{background:#eee;color:#111}.note,.qcontext{background:#292929}.option.selected{background:#303030;border-color:#aaa}.btn{background:#eee;color:#111;border-color:#eee}.btn.secondary{background:#1b1b1b;color:#eee;border-color:#555}.feedback.good{background:#173522;color:#b8e5c5}.feedback.bad{background:#401f1f;color:#ffc1c1}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+ <div><div class="eyebrow">PYTHON TEST DEVELOPMENT · STUDY EDITION 01</div><div class="title">Python 测试开发学习中心</div><div class="subtitle">截至 2026-11-13 的学习内容整理 · Python L2 / Pytest / BVT 源码分析</div></div>
+ <span class="pill">本地自动保存</span>
+</header>
+<nav class="nav" aria-label="学习导航">
+ <button class="active" data-tab="home">学习地图</button><button data-tab="lessons">知识讲解</button><button data-tab="quiz">练习题</button><button data-tab="coding">代码实操</button><button data-tab="progress">学习记录</button>
+</nav>
+<section id="home" class="section active">
+ <div class="panel">
+  <div class="eyebrow">YOUR LEARNING PATH</div><h2>先把已学内容连成一条线</h2>
+  <p class="muted">这不是重新从零学 Python。重点是把你已经接触过的 Python 工程基础、Pytest 和 BVT 源码定位，整理成可复习、可练习、可验收的路径。</p>
+  <div class="bar"><i id="homebar"></i></div>
+  <div class="stats"><div class="stat"><strong id="doneCount">0</strong><span>已通过题目</span></div><div class="stat"><strong id="wrongCount">0</strong><span>待复习错题</span></div><div class="stat"><strong id="taskCount">0/3</strong><span>实操任务完成</span></div></div>
+ </div>
+ <div class="cards">
+  <div class="topic"><div class="tag">MODULE 01</div><h3>Python 工程基础</h3><p>函数、模块、文件/JSON、异常、日志、数据校验。</p></div>
+  <div class="topic"><div class="tag">MODULE 02</div><h3>Pytest 基础</h3><p>测试发现、assert、fixture、参数化、临时文件和异常验证。</p></div>
+  <div class="topic"><div class="tag">MODULE 03</div><h3>BVT 源码分析</h3><p>调用链、参数传递、数据来源、判定逻辑、日志证据。</p></div>
+  <div class="topic"><div class="tag">MODULE 04</div><h3>工程验证习惯</h3><p>最小修改、回归设计、Git diff 与提交前检查。</p></div>
+ </div>
+ <div class="panel"><h2>建议学习顺序</h2><ol><li>先看知识讲解，确认每层代码负责什么。</li><li>再做练习题；答错只给定位提示，不直接公布正确答案。</li><li>最后完成电脑实操，在 PyCharm 中运行代码并保留验证证据。</li></ol><div class="note">学习原则：听懂不等于会写。代码题必须由你自己组织代码，并通过本地运行验证，才算独立掌握。</div></div>
+</section>
+<section id="lessons" class="section">
+ <div class="panel"><h2>知识讲解</h2><p class="muted">按原理 → 架构 → 数据流 → 接口 → 定位方法 → 最小修改 → Git 验证组织。每个模块都对应真实测试开发任务。</p></div>
+ <details class="lesson" open><summary>01｜Python 工程基础：从一条测试报告到统计结果</summary><div class="body">
+  <h3>原理与数据流</h3><p>读取文件 → JSON 反序列化 → 提取字段 → 校验数据类型 → 计算状态 → 汇总结果。每一层只处理自己负责的问题。</p>
+  <pre>文件路径
+  ↓
+json.load(file)
+  ↓
+report["loss"]
+  ↓
+校验 loss 类型和取值
+  ↓
+PASS / FAIL / ERROR
+  ↓
+统计并输出</pre>
+  <h3>异常边界</h3><ul><li><code>FileNotFoundError</code>：目标文件不存在。</li><li><code>json.JSONDecodeError</code>：文件内容不是合法 JSON。</li><li><code>KeyError</code>：字典缺少指定字段。</li><li><code>TypeError</code> / <code>ValueError</code>：数据类型或取值不符合约定。</li></ul>
+  <div class="note">单条报告异常：记录 ERROR 后继续处理下一条。目录不存在、配置缺失等初始化问题：可能导致整个任务无法启动，不能简单吞掉异常。</div>
+  <h3>数据校验陷阱</h3><pre>if isinstance(loss, (int, float)):
+    ...
+</pre><p>Python 中 <code>bool</code> 是 <code>int</code> 的子类，所以 <code>True</code> 也会通过上面的类型检查。需要先排除布尔值，再检查数值类型。</p>
+  <pre>if isinstance(loss, bool):
+    # 非法
+    ...
+elif not isinstance(loss, (int, float)):
+    # 非法
+    ...</pre>
+  <h3>模块与入口</h3><p>工具函数放在模块中，入口文件负责组织流程。<code>if __name__ == "__main__":</code> 用来区分“直接运行文件”和“被其他模块导入”。</p>
+  <h3>日志</h3><p><code>logging</code> 用于记录运行过程。INFO 记录正常阶段和结果，WARNING 记录可恢复异常，ERROR 记录失败原因。日志信息应能回答：什么时候、处理什么对象、发生了什么。</p>
+ </div></details>
+ <details class="lesson"><summary>02｜Pytest：让测试代码自动执行和判定</summary><div class="body">
+  <h3>测试发现规则</h3><p>默认将文件名写成 <code>test_*.py</code> 或 <code>*_test.py</code>，测试函数通常以 <code>test_</code> 开头。这样 Pytest 才能按约定发现用例。</p>
+  <h3>断言 assert</h3><pre>def test_ping_status():
+    result = run_ping()
+    assert result["status"] == "ok"</pre><p>测试函数调用被测功能，assert 比较实际结果和预期结果。条件为 False 时，测试失败并输出断言信息。</p>
+  <h3>fixture</h3><pre>import pytest
+
+@pytest.fixture
+def sample_report():
+    return {"loss": 0}
+
+def test_report(sample_report):
+    assert sample_report["loss"] == 0</pre><p>fixture 提供测试前置资源或数据。测试函数把 fixture 名称写为参数，Pytest 会注入对应返回值；需要清理资源时可使用 yield。</p>
+  <h3>参数化</h3><pre>@pytest.mark.parametrize(
+    "loss, expected",
+    [(0, "PASS"), (1, "FAIL")]
+)
+def test_get_status(loss, expected):
+    assert get_status(loss) == expected</pre><p>同一测试逻辑使用多组输入和预期结果重复执行，减少重复代码。参数化数据要覆盖正常、边界和非法输入。</p>
+  <h3>临时文件与异常</h3><p><code>tmp_path</code> 是 Pytest 提供的临时目录 fixture，适合创建测试文件，避免污染真实项目目录。对于预期抛出的异常，可使用 <code>pytest.raises(...)</code> 验证。</p>
+ </div></details>
+ <details class="lesson"><summary>03｜BVT 源码定位：不要只盯着最后一行</summary><div class="body">
+  <h3>先画调用链</h3><pre>Test Case
+   ↓
+Workflow / Service
+   ↓
+Adapter / Tool
+   ↓
+系统命令或设备接口
+   ↓
+原始结果
+   ↓
+解析与标准化
+   ↓
+PASS / FAIL 判定
+   ↓
+报告输出</pre>
+  <h3>定位顺序</h3><ol><li>明确现象：输入是什么、实际输出是什么、预期是什么。</li><li>从日志找到关键函数、参数和值。</li><li>沿调用链向下追踪，找到第一处数据偏差。</li><li>区分采集/解析错误与业务判定错误。</li><li>分析调用方影响，只做最小修改。</li><li>设计正常、异常、边界回归。</li><li>用 Git 检查修改范围和差异。</li></ol>
+  <div class="note">例如“发 4 收 3，却判 PASS”：先确认原始 ping 输出和解析后的 received，再检查 success 的生成位置，最后检查上层是否直接沿用了 success。不能看到报告 PASS 就直接改报告层。</div>
+  <h3>参数传递</h3><p>如果 Service 收到 <code>timeout=5</code>，调用 Adapter 时却没有传递该参数，Adapter 可能使用自己的默认值。排查时要逐层记录：调用方传入什么、被调用方收到什么、默认值在哪里生效。</p>
+  <h3>Git 验证</h3><pre>git status
+git diff
+git add path/to/target_file.py
+git diff --cached
+git commit -m "fix: correct ping result parsing"</pre><p>先看工作区变化，再定向暂存目标文件，检查暂存区差异，确认没有混入无关文件后提交。</p>
+ </div></details>
+</section>
+<section id="quiz" class="section">
+ <div class="panel">
+  <div class="quiz-head"><div><div class="eyebrow">KNOWLEDGE CHECK</div><h2 style="margin:3px 0">单题练习</h2></div><span class="pill" id="quizFilter">全部题目</span></div>
+  <div class="small" id="quizProgress">第 1 题</div><div class="bar"><i id="quizbar"></i></div>
+  <div class="qtitle" id="question"></div><div id="context" class="qcontext" hidden></div>
+  <div class="options" id="options"></div><div id="feedback" aria-live="polite"></div>
+  <div class="actions"><button class="btn secondary" id="prevBtn">上一题</button><button class="btn secondary" id="retryBtn" hidden>重新选择</button><button class="btn" id="nextBtn" hidden>继续</button><button class="btn secondary" id="wrongOnlyBtn">只复习错题</button><button class="btn secondary" id="allBtn" hidden>查看全部</button></div>
+ </div>
+ <div class="small">答错：只提示相关知识点，不公布正确答案；可重新选择。答对：显示解析后才能继续。进度会保存在当前浏览器。</div>
+</section>
+<section id="coding" class="section">
+ <div class="panel"><h2>电脑实操任务</h2><p class="muted">这些任务不在网页里假装执行 Python。请复制到 PyCharm / 你的练习项目中，运行通过后再勾选完成。</p></div>
+ <div class="code-task"><h3>实操 1｜完善报告状态判断</h3><p>编写 <code>get_status(loss)</code>：loss 为 0 返回 PASS；大于 0 返回 FAIL；布尔值、字符串、负数等非法输入按约定处理。注意 bool 与 int 的继承关系。</p><pre>def get_status(loss):
+    # 在这里完成校验和状态判断
+    pass</pre><label class="checkline"><input type="checkbox" data-task="0"> 我独立完成，并在电脑运行正常、异常和边界用例。</label></div>
+ <div class="code-task"><h3>实操 2｜为状态判断写 Pytest</h3><p>至少覆盖 PASS、FAIL、负数、字符串、布尔值。尝试使用参数化，把多组输入和预期结果放在一处管理。</p><pre>def test_get_status():
+    # 准备输入
+    # 调用被测函数
+    # 使用 assert 验证实际结果
+    pass</pre><label class="checkline"><input type="checkbox" data-task="1"> 我独立编写测试用例，并通过 pytest 运行。</label></div>
+ <div class="code-task"><h3>实操 3｜BVT 调用链定位练习</h3><p>找一个熟悉的 BVT 功能，写清入口、调用方、被调用方、参数、返回值、日志证据和第一处数据偏差。提出最小修改，并设计回归。</p><pre>现象：
+输入参数：
+调用链：
+第一处数据偏差：
+最小修改：
+回归场景：
+Git 验证：</pre><label class="checkline"><input type="checkbox" data-task="2"> 我能独立讲清一次源码定位过程，并保留 Git / 运行证据。</label></div>
+ <div class="note">勾选只记录你的自我验收，不会自动证明代码正确。需要时可把代码和运行结果交给 AI 做代码审查。</div>
+</section>
+<section id="progress" class="section">
+ <div class="panel"><h2>学习记录</h2><p class="muted">记录只保存在当前浏览器的本地存储中。清理浏览器数据或换设备不会自动同步。</p><div class="stats"><div class="stat"><strong id="pDone">0</strong><span>通过</span></div><div class="stat"><strong id="pWrong">0</strong><span>错题</span></div><div class="stat"><strong id="pTasks">0/3</strong><span>实操</span></div></div><div class="bar"><i id="pbar"></i></div><div class="actions"><button class="btn secondary" id="exportBtn">导出学习记录</button><button class="btn secondary" id="resetBtn">重置本地记录</button></div><p class="small" id="savedAt">尚无记录</p></div>
+ <div class="panel"><h2>错题列表</h2><div id="wrongList" class="muted">目前没有错题记录。</div></div>
+</section>
+<div class="footer">Study edition 01 · 内容范围：截至 2026-11-13 · 题目与学习进度为个人学习辅助，不替代本地代码运行验证。</div>
+</div>
+<script>
+(function(){
+"use strict";
+const KEY="python-test-learning-progress-v1";
+const questions=[
+{topic:"Python / 异常",q:"批量读取报告时，一份 JSON 文件格式损坏。更合理的处理方式是什么？",opts:["让整个批量任务立即退出","捕获该文件的 JSON 解析异常，记录 ERROR 后继续下一份","把损坏文件当作 PASS","忽略异常且不记录"],a:1,why:"单条记录损坏不应影响其他报告。应在单条记录处理边界捕获解析异常，记录对象和原因，然后继续循环。"},
+{topic:"Python / 异常",q:"下面代码中的 continue 会产生什么效果？",ctx:"for file in report_files:\\n    try:\\n        report = load_report(file)\\n    except ValueError:\\n        errors += 1\\n        continue\\n    process(report)",opts:["结束整个 Python 程序","结束当前函数","跳过本轮循环剩余语句，进入下一份文件","重新执行当前文件"],a:2,why:"continue 只影响当前循环轮次。它会跳过本轮后续语句，进入下一次循环。"},
+{topic:"Python / 类型校验",q:"为什么只写 isinstance(loss, (int, float)) 仍可能把 True 当作合法数字？",opts:["True 在 Python 中是 int 的子类","isinstance 只能检查字符串","float 会把 True 转成文本","JSON 不支持布尔值"],a:0,why:"Python 中 bool 是 int 的子类，因此 True/False 会通过对 int 的 isinstance 检查。需要先显式排除 bool。"},
+{topic:"Python / 文件路径",q:"Path(__file__).resolve().parent 通常表示什么？",opts:["当前进程的工作目录","当前 Python 文件所在目录","系统临时目录","当前用户主目录"],a:1,why:"__file__ 指向当前脚本文件，resolve() 得到规范化绝对路径，parent 取其所在目录。"},
+{topic:"Python / 模块",q:"if __name__ == '__main__': 的主要作用是什么？",opts:["确保模块只能导入一次","让文件被导入时也执行所有入口代码","区分直接运行文件与作为模块导入","自动安装依赖"],a:2,why:"直接运行脚本时 __name__ 为 __main__；被其他模块导入时则是模块名，因此可保护程序入口。"},
+{topic:"Python / 日志",q:"测试工具在处理每个设备时，需要记录设备名、运行阶段和异常原因。最合适的方式是什么？",opts:["只用 print 输出最终 PASS/FAIL","使用 logging 在关键阶段记录结构清晰的信息","把异常全部忽略","只记录时间，不记录对象"],a:1,why:"日志应提供定位上下文，至少能看出处理对象、运行阶段、结果和异常原因。"},
+{topic:"Pytest / 发现规则",q:"下面哪个文件名最符合 Pytest 默认测试文件发现约定？",opts:["ping_service.py","test_ping_service.py","ping_test_service.txt","service_ping.py"],a:1,why:"默认约定包括 test_*.py 或 *_test.py。文件名不符合发现规则时，测试可能不会被自动收集。"},
+{topic:"Pytest / 断言",q:"执行 assert result['status'] == 'ok' 的作用是什么？",opts:["调用系统 ping 命令","把字典写入文件","验证实际状态是否等于预期值","自动重试失败测试"],a:2,why:"assert 表达测试预期。条件为 False 时，Pytest 将该用例判为失败，并提供断言信息。"},
+{topic:"Pytest / fixture",q:"测试函数把 sample_report 写成参数，且项目中定义了同名 @pytest.fixture。Pytest 会怎样处理？",opts:["自动把 fixture 的返回值注入测试函数","把字符串 sample_report 传进去","跳过该测试","要求手动调用 fixture 函数"],a:0,why:"测试函数通过参数名请求 fixture，Pytest 负责执行 fixture 并注入其返回值。"},
+{topic:"Pytest / 参数化",q:"同一个 get_status 函数需要验证 0、1、负数和非法类型。参数化的主要价值是什么？",opts:["让所有输入只执行一次","为每组输入重复复制一份测试函数","用一套测试逻辑覆盖多组输入和预期结果","跳过失败的输入"],a:2,why:"parametrize 把多组测试数据交给同一测试逻辑执行，减少重复代码，也便于补充边界场景。"},
+{topic:"Pytest / 临时文件",q:"测试文件读写功能时，为什么优先使用 tmp_path？",opts:["它会修改真实用户目录","它提供独立临时目录，减少测试数据污染","它会自动上传文件","它能替代 json.load"],a:1,why:"tmp_path 是 Pytest 提供的临时目录 fixture，适合在测试中创建文件并隔离数据。"},
+{topic:"BVT / 数据流",q:"BVT 报告显示 PASS，但怀疑底层实际收到的结果不正确。第一步更应该做什么？",opts:["直接修改报告颜色","从日志和调用链确认原始结果、解析结果和上层判定","先重写整个测试框架","只增加 sleep"],a:1,why:"先找第一处数据偏差。要区分底层采集、输出解析、状态转换和报告展示，不能只改最后一层。"},
+{topic:"BVT / 参数传递",q:"Service 收到 timeout=5，但 Adapter 实际使用 timeout=30。优先检查什么？",opts:["UI 按钮颜色","Service 调用 Adapter 时是否传参，以及 Adapter 默认值在哪里生效","Git 用户名","报告文件编码"],a:1,why:"沿调用链核对每一层的实参、形参和默认值，确认参数在哪一层丢失或被覆盖。"},
+{topic:"BVT / 最小修改",q:"定位到解析器漏识别一行 ping 输出，导致 received 少 1。最合理的修改策略是什么？",opts:["重写所有网络模块","只修正对应解析规则，并补充该输出格式的回归用例","把所有 FAIL 改成 PASS","删除 received 字段"],a:1,why:"问题在解析层，就优先修改解析层并补充针对性回归，同时检查相邻格式不受影响。"},
+{topic:"Git / 验证",q:"修改代码后，为什么要执行 git diff --cached？",opts:["查看暂存区中即将提交的具体差异","自动运行全部 Pytest","删除未跟踪文件","把远程分支拉到本地"],a:0,why:"git diff --cached 查看暂存区差异，提交前确认本次提交只包含预期文件和修改。"}
+];
+let state=load();
+let index=0,wrongMode=false;
+function fresh(){return {answers:{},wrong:{},tasks:[false,false,false],updated:null};}
+function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){return fresh();}}
+function save(){state.updated=new Date().toLocaleString();localStorage.setItem(KEY,JSON.stringify(state));renderStats();}
+function passed(){return Object.keys(state.answers).length;}
+function wrongCount(){return Object.keys(state.wrong).filter(k=>state.wrong[k]).length;}
+function taskCount(){return state.tasks.filter(Boolean).length;}
+function renderStats(){
+ const d=passed(),w=wrongCount(),t=taskCount(),pct=Math.round((d/ questions.length)*100);
+ ["doneCount","pDone"].forEach(id=>document.getElementById(id).textContent=d);
+ ["wrongCount","pWrong"].forEach(id=>document.getElementById(id).textContent=w);
+ ["taskCount","pTasks"].forEach(id=>document.getElementById(id).textContent=t+"/3");
+ document.getElementById("homebar").style.width=pct+"%";document.getElementById("pbar").style.width=pct+"%";
+ document.getElementById("savedAt").textContent=state.updated?"最近保存："+state.updated:"尚无记录";
+}
+function list(){return questions.map((q,i)=>i).filter(i=>!wrongMode||state.wrong[i]);}
+function showQuestion(){
+ const ids=list();
+ document.getElementById("quizFilter").textContent=wrongMode?"错题复习":"全部题目";
+ if(!ids.length){document.getElementById("question").textContent="目前没有待复习错题。";document.getElementById("options").innerHTML="";document.getElementById("feedback").innerHTML="";document.getElementById("quizProgress").textContent="已完成";document.getElementById("nextBtn").hidden=true;return;}
+ if(index>=ids.length)index=ids.length-1;if(index<0)index=0;
+ const real=ids[index],q=questions[real],chosen=state.answers[real],wasWrong=!!state.wrong[real];
+ document.getElementById("quizProgress").textContent="第 "+(index+1)+" / "+ids.length+" 题 · "+q.topic;
+ document.getElementById("quizbar").style.width=(100*(index+1)/ids.length)+"%";
+ document.getElementById("question").textContent=q.q;
+ const ctx=document.getElementById("context");ctx.hidden=!q.ctx;ctx.textContent=q.ctx||"";
+ const opts=document.getElementById("options");opts.innerHTML="";
+ q.opts.forEach((opt,j)=>{
+  const b=document.createElement("button");b.className="option"+(chosen===j?" selected":"");b.type="button";
+  const l=document.createElement("span");l.className="letter";l.textContent=String.fromCharCode(65+j);
+  const s=document.createElement("span");s.textContent=opt;b.append(l,s);
+  b.addEventListener("click",()=>choose(real,j));opts.appendChild(b);
+ });
+ const fb=document.getElementById("feedback");fb.innerHTML="";
+ if(chosen!==undefined){
+  const good=chosen===q.a;
+  const div=document.createElement("div");div.className="feedback "+(good?"good":"bad");
+  if(good){div.textContent="✓ 答对了。"+q.why;}
+  else{div.textContent="✕ 这次选择还不正确。检查一下相关知识点："+q.why.split("。")[0]+"。请重新选择，不公布正确选项。";}
+  fb.appendChild(div);
+ }
+ document.getElementById("retryBtn").hidden=chosen===undefined||chosen===q.a;
+ document.getElementById("nextBtn").hidden=chosen!==q.a;
+ document.getElementById("prevBtn").disabled=index===0;
+ document.getElementById("wrongOnlyBtn").hidden=wrongMode;
+ document.getElementById("allBtn").hidden=!wrongMode;
+}
+function choose(real,j){
+ const q=questions[real];state.answers[real]=j;
+ if(j===q.a){delete state.wrong[real];}
+ else{state.wrong[real]=true;}
+ save();showQuestion();
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));
+ if(b.dataset.tab==="quiz")showQuestion();
+ if(b.dataset.tab==="progress")renderWrongList();
+}));
+document.getElementById("nextBtn").addEventListener("click",()=>{index++;showQuestion();});
+document.getElementById("prevBtn").addEventListener("click",()=>{index=Math.max(0,index-1);showQuestion();});
+document.getElementById("retryBtn").addEventListener("click",()=>{const id=list()[index];delete state.answers[id];save();showQuestion();});
+document.getElementById("wrongOnlyBtn").addEventListener("click",()=>{wrongMode=true;index=0;showQuestion();});
+document.getElementById("allBtn").addEventListener("click",()=>{wrongMode=false;index=0;showQuestion();});
+document.querySelectorAll("[data-task]").forEach(c=>{c.checked=!!state.tasks[Number(c.dataset.task)];c.addEventListener("change",()=>{state.tasks[Number(c.dataset.task)]=c.checked;save();});});
+function renderWrongList(){
+ const box=document.getElementById("wrongList"),ids=Object.keys(state.wrong).filter(k=>state.wrong[k]).map(Number);
+ if(!ids.length){box.textContent="目前没有错题记录。";return;}
+ box.innerHTML="";ids.forEach(i=>{const p=document.createElement("p");p.textContent=(i+1)+". "+questions[i].topic+"｜"+questions[i].q;box.appendChild(p);});
+}
+document.getElementById("exportBtn").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),state:state},null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="python-learning-progress.json";a.click();URL.revokeObjectURL(a.href);
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+ if(confirm("确定清空当前浏览器保存的答题和实操记录吗？")){state=fresh();save();index=0;showQuestion();renderWrongList();document.querySelectorAll("[data-task]").forEach(c=>c.checked=false);}
+});
+renderStats();showQuestion();
+})();
+</script>
+</body>
+</html>
