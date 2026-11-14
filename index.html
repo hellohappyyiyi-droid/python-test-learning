@@ -244,7 +244,7 @@ function renderStats(){
 function escapeHTML(value){return value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function escapeHTML(value){return value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function renderPython(source){
- const token=/(#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:def|return|for|in|try|except|if|elif|else|pass|continue|break|with|as|import|from|class|raise|and|or|not|is|lambda|yield|True|False|None)\b|\b(?:pytest|json|logging|Path|isinstance|int|float|str|bool|list|dict|print)\b|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*(?=\s*\()/gm;
+ const token=/#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:def|return|for|in|try|except|if|elif|else|pass|continue|break|with|as|import|from|class|raise|and|or|not|is|lambda|yield|True|False|None)\b|\b(?:pytest|json|logging|Path|isinstance|int|float|str|bool|list|dict|print)\b|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*(?=\s*\()/gm;
  let out="",last=0,match;
  while((match=token.exec(source))!==null){
   out+=escapeHTML(source.slice(last,match.index));
