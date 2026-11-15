@@ -184,8 +184,8 @@ let state=load();
 let index=0,wrongMode=false;
 const DB_NAME="python-test-learning-progress";
 const STORE_NAME="records";
-function fresh(){return {answers:{},wrong:{},tasks:[false,false,false],updated:null};}
-function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){return fresh();}}
+function fresh(){return {answers:{},wrong:{},tasks:[false,false,false],view:{tab:"home",questionIndex:0,wrongMode:false},updated:null};}
+function load(){try{const v=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"));v.view=Object.assign({tab:"home",questionIndex:0,wrongMode:false},v.view||{});return v;}catch(e){return fresh();}}
 function openProgressDB(){
  return new Promise((resolve,reject)=>{
   if(!window.indexedDB){reject(new Error("IndexedDB unavailable"));return;}
@@ -213,9 +213,9 @@ async function restoreProgressDB(){
   });
   db.close();
   if(saved && (!state.updated || Date.parse(saved.updated||0)>Date.parse(state.updated||0))){
-   state=Object.assign(fresh(),saved);
+   state=Object.assign(fresh(),saved);state.view=Object.assign({tab:"home",questionIndex:0,wrongMode:false},state.view||{});
    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
-   renderStats();showQuestion();
+   restoreLastPosition();renderStats();showQuestion();
    document.querySelectorAll("[data-task]").forEach(c=>c.checked=!!state.tasks[Number(c.dataset.task)]);
   }
   status.textContent=state.updated?"进度已恢复 · 本机保存":"自动保存已开启";
@@ -229,6 +229,14 @@ function save(){
  renderStats();
  writeProgressDB().then(()=>{document.getElementById("storageStatus").textContent="已保存 · 本机浏览器";})
   .catch(()=>{document.getElementById("storageStatus").textContent="本地保存失败 · 请导出备份";});
+}
+function restoreLastPosition(){
+ const valid=["home","lessons","quiz","coding","progress"];
+ const tab=valid.includes(state.view?.tab)?state.view.tab:"home";
+ index=Number.isInteger(state.view?.questionIndex)?Math.max(0,state.view.questionIndex):0;
+ wrongMode=!!state.view?.wrongMode;
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+ document.querySelectorAll(".section").forEach(sec=>sec.classList.toggle("active",sec.id===tab));
 }
 function passed(){return Object.keys(state.answers).length;}
 function wrongCount(){return Object.keys(state.wrong).filter(k=>state.wrong[k]).length;}
@@ -265,6 +273,7 @@ function showQuestion(){
  document.getElementById("quizFilter").textContent=wrongMode?"错题复习":"全部题目";
  if(!ids.length){document.getElementById("question").textContent="目前没有待复习错题。";document.getElementById("options").innerHTML="";document.getElementById("feedback").innerHTML="";document.getElementById("quizProgress").textContent="已完成";document.getElementById("nextBtn").hidden=true;return;}
  if(index>=ids.length)index=ids.length-1;if(index<0)index=0;
+ state.view=Object.assign({tab:"quiz",questionIndex:0,wrongMode:false},state.view||{});state.view.questionIndex=index;state.view.wrongMode=wrongMode;
  const real=ids[index],q=questions[real],chosen=state.answers[real],wasWrong=!!state.wrong[real];
  document.getElementById("quizProgress").textContent="第 "+(index+1)+" / "+ids.length+" 题 · "+q.topic;
  document.getElementById("quizbar").style.width=(100*(index+1)/ids.length)+"%";
@@ -300,14 +309,15 @@ function choose(real,j){
 document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>{
  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));
  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));
+ state.view=Object.assign({tab:"home",questionIndex:0,wrongMode:false},state.view||{});state.view.tab=b.dataset.tab;save();
  if(b.dataset.tab==="quiz")showQuestion();
  if(b.dataset.tab==="progress")renderWrongList();
 }));
-document.getElementById("nextBtn").addEventListener("click",()=>{index++;showQuestion();});
-document.getElementById("prevBtn").addEventListener("click",()=>{index=Math.max(0,index-1);showQuestion();});
+document.getElementById("nextBtn").addEventListener("click",()=>{index++;state.view.questionIndex=index;save();showQuestion();});
+document.getElementById("prevBtn").addEventListener("click",()=>{index=Math.max(0,index-1);state.view.questionIndex=index;save();showQuestion();});
 document.getElementById("retryBtn").addEventListener("click",()=>{const id=list()[index];delete state.answers[id];save();showQuestion();});
-document.getElementById("wrongOnlyBtn").addEventListener("click",()=>{wrongMode=true;index=0;showQuestion();});
-document.getElementById("allBtn").addEventListener("click",()=>{wrongMode=false;index=0;showQuestion();});
+document.getElementById("wrongOnlyBtn").addEventListener("click",()=>{wrongMode=true;index=0;state.view.wrongMode=true;state.view.questionIndex=0;save();showQuestion();});
+document.getElementById("allBtn").addEventListener("click",()=>{wrongMode=false;index=0;state.view.wrongMode=false;state.view.questionIndex=0;save();showQuestion();});
 document.querySelectorAll("[data-task]").forEach(c=>{c.checked=!!state.tasks[Number(c.dataset.task)];c.addEventListener("change",()=>{state.tasks[Number(c.dataset.task)]=c.checked;save();});});
 function renderWrongList(){
  const box=document.getElementById("wrongList"),ids=Object.keys(state.wrong).filter(k=>state.wrong[k]).map(Number);
@@ -321,7 +331,7 @@ document.getElementById("exportBtn").addEventListener("click",()=>{
 document.getElementById("resetBtn").addEventListener("click",()=>{
  if(confirm("确定清空当前浏览器保存的答题和实操记录吗？")){state=fresh();save();index=0;showQuestion();renderWrongList();document.querySelectorAll("[data-task]").forEach(c=>c.checked=false);}
 });
-renderStats();showQuestion();restoreProgressDB();
+restoreLastPosition();renderStats();showQuestion();restoreProgressDB();
 })();
 </script>
 </body>
