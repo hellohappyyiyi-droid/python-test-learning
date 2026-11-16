@@ -334,5 +334,6 @@ document.getElementById("resetBtn").addEventListener("click",()=>{
 restoreLastPosition();renderStats();showQuestion();restoreProgressDB();
 })();
 </script>
-<script>for(const d of [10,11,12,13,14,15]){try{const p=JSON.parse(localStorage.getItem("test-learning:2026-11-"+d)||"null");const el=document.getElementById("day-history-"+d);el.textContent=p?("理解题已通过 "+p.passed.length+" · 当前位置第 "+Math.min(p.qi+1,JSON.parse(p.signature).length)+" 题 · 实操待验收"):"尚无本机记录";}catch(e){}}</script></body>
+<script>for(const d of [10,11,12,13,14,15]){try{const p=JSON.parse(localStorage.getItem("test-learning:2026-11-"+d)||"null");const el=document.getElementById("day-history-"+d);el.textContent=p?("理解题已通过 "+p.passed.length+" · 当前位置第 "+Math.min(p.qi+1,JSON.parse(p.signature).length)+" 题 · 实操待验收"):"尚无本机记录";}catch(e){}}</script><section class="panel" id="next-day-2026-11-17"><h2>次日学习 · 2026-11-17</h2><p><a href="./daily/2026-11-17.html">打开11/17 Pytest参数化与fixture进阶做题本（15道新题＋电脑实操）</a></p><p><a href="./weekly/2026-W47.html">打开第47周综合做题本</a></p><p class="small">11/12选择题已完成；参数化电脑实操仍待独立验收。历史页面与本机记录不受影响。</p></section>
+</body>
 </html>
